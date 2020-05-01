@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*,Dao.*" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="com.huang.Dao.UserDao" %>
+<%@ page import="com.huang.factory.DaoFactory" %>
+<%@ page import="com.huang.entity.User" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,34 +16,14 @@
 	String username=request.getParameter("username");
 	String password=request.getParameter("password");
 	boolean t=false;
-	UserDao  userDao=new UserDao();
-	t=userDao.adduser(username,password);
+	UserDao userDao= DaoFactory.getUserDao();
+	User user = new User(username,password);
+	t=userDao.adduser(user);
 	if(t){
-	//2.访问数据库，向admin_info表添加一条记录
-	/*
-	if(username!=null && !username.isEmpty() && password!=null && !password.isEmpty()){
-		String url="jdbc:mysql://localhost:3306/db_shop";
-		String user="root";
-		String PassWord="root";
-		
-		Class.forName("com.mysql.jdbc.Driver");
-		Connection conn=DriverManager.getConnection(url,user,PassWord);
-		String sql="insert into admin_info (name,pwd) values(?,?)";
-		PreparedStatement pt=conn.prepareStatement(sql);
-		pt.setString(1,username);
-		pt.setString(2,password);
-		int n=pt.executeUpdate();
-		if(n>0){
-			*/
-			//System.out.print("添加成功!!!");
 			out.print("添加成功!!!");
-			/*
-			pt.close();
-			conn.close();
-				*/
-		   }else{
-		%>
-	<%
+	}else{
+%>
+<%
 	response.sendRedirect("jia.jsp");
 	}
 	
