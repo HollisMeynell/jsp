@@ -22,7 +22,6 @@
             <div class="media media-y margin-big-bottom">           
             </div>  
             <%
-//读取客户端的cookie
 	Cookie[] cookies=request.getCookies();
 	String username="";
 	String password="";
@@ -37,7 +36,7 @@
 		}
 	}
  %>       
-            <form action="check.jsp" method="post">
+            <form action="../userservlet" method="post">
             <div class="panel loginbox">
                 <div class="text-center margin-big padding-big-top"><h1>后台管理中心</h1></div>
                 <div class="panel-body" style="padding:30px; padding-bottom:10px; padding-top:10px;">
@@ -61,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="">
                 <div style="padding:30px;"><input type="submit" class="button button-block bg-main text-big input-big" value="登录"></div>
             </div>
             </form>          
