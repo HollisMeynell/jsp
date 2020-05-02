@@ -64,6 +64,11 @@ public class user_servlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            if(flag){
+                out.print("添加成功");
+            }else {
+                out.print("添加失败");
+            }
 
         }else if("setuser".equals(operate)){
             String username=request.getParameter("username");
