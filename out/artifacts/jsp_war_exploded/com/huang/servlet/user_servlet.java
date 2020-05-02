@@ -11,6 +11,8 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 @WebServlet(name = "user_servlet",urlPatterns = "/userservlet")
 public class user_servlet extends HttpServlet {
@@ -58,15 +60,67 @@ public class user_servlet extends HttpServlet {
             UserDao userDao= DaoFactory.getUserDao();
             User user = new User(username,password);
             try {
-                flag=userDao.adduser(user);
+                if(userDao.getId(username) ==0) flag=userDao.adduser(user);
+                else out.print("用户名重复<br>");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }else if("setuser".equals(operate)){
+            String username=request.getParameter("username");
+            String password=request.getParameter("password");
+            int id = Integer.valueOf(request.getParameter("id"));
+            User user = new User(id,username,password);
+            boolean flag = false;
+            UserDao dao = DaoFactory.getUserDao();
+            try {
+                flag = dao.setuser(user);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             if(flag){
-                out.print("添加成功");
+                out.print("修改成功");
             }else {
-                out.print("添加失败");
+                out.print("修改失败");
             }
+        }else if ("queryall".equals(operate)){
+            String name = request.getParameter("name");
+            ArrayList<User> users = null;
+            try {
+                users = DaoFactory.getUserDao().findUser(name);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (users != null) {
+                StringBuilder date = new StringBuilder("{\"user\":{");
+                int i = 1;
+                for (User u : users) {
+                    if (i != 1) {
+                        date.append(',');
+                    }
+                    date.append("\"" + (i++) + "\":{");
+                    date.append("\"id\":" + u.getId());
+                    date.append(",\"name\":\"" + u.getName() + '"');
+                    date.append("}");
+                }
+                date.append("}}");
+                out.write(new String(date));
+            }
+        }else if("deleuser".equals(operate)){
+            int id = Integer.valueOf(request.getParameter("id"));
+            UserDao dao = DaoFactory.getUserDao();
+            boolean flag = false;
+            try {
+                flag = dao.delUser(id);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if (flag)
+                out.write("ok");
+            else
+                out.write("0");
+        }else {
+            out.print("请求异常");
         }
     }
 }

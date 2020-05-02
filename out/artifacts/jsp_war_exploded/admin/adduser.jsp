@@ -1,5 +1,7 @@
+<%@ page import="com.huang.Dao.UserDao" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+         pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
@@ -12,12 +14,24 @@
 <link rel="stylesheet" href="css/admin.css">
 <script src="js/jquery.js"></script>
 <script src="js/pintuer.js"></script>
+  <script>
+    function chick() {
+      var pd = $("input[name='password']").val();
+      var rpd = $("input[name='repassword']").val();
+      if(pd == rpd){
+        return true;
+      }else alert("两次密码不一致,请重新输入");
+      $("input[name='password']").val('');
+      $("input[name='repassword']").val('');
+      return false;
+    }
+  </script>
 </head>
 <body>
 <div class="panel admin-panel">
-  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加内容</strong></div>
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加用户</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="../userservlet">
+    <form method="post" class="form-x" action="../userservlet" onsubmit="return chick()">
       <div class="form-group">
         <div class="label">
           <label>用户名：</label>
