@@ -4,7 +4,6 @@ import com.huang.Dao.UserDao;
 import com.huang.entity.User;
 import com.huang.factory.DaoFactory;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -12,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+
 
 @WebServlet(name = "user_servlet",urlPatterns = "/userservlet")
 public class user_servlet extends HttpServlet {
@@ -116,9 +115,9 @@ public class user_servlet extends HttpServlet {
                 e.printStackTrace();
             }
             if (flag)
-                out.write("ok");
+                out.write("成功删除");
             else
-                out.write("0");
+                out.write("删除失败");
         }else {
             out.print("请求异常");
         }

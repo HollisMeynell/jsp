@@ -76,4 +76,15 @@ public class UserDaoImpl implements UserDao {
         }
     }
 
+    @Override
+    public boolean setuser(User user) throws SQLException {
+        String sql = "update admin_info set name=?,pwd=? where id=?";
+        PreparedStatement prep = SQL.getInstance().getConn().prepareStatement(sql);
+        prep.setString(1,user.getName());
+        prep.setString(2,user.getPasswd());
+        prep.setInt(3,user.getId());
+        prep.executeUpdate();
+        return true;
+    }
+
 }

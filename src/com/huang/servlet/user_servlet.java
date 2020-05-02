@@ -115,9 +115,9 @@ public class user_servlet extends HttpServlet {
                 e.printStackTrace();
             }
             if (flag)
-                out.write("ok");
+                out.write("成功删除");
             else
-                out.write("0");
+                out.write("删除失败");
         }else {
             out.print("请求异常");
         }
