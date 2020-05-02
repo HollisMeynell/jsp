@@ -12,7 +12,6 @@
 </head>
 <body>
 <%
-	//1.获取用户表单输入信息
 	String username=request.getParameter("username");
 	String password=request.getParameter("password");
 	boolean t=false;

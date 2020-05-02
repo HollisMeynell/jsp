@@ -17,7 +17,7 @@
 <div class="panel admin-panel">
   <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>增加内容</strong></div>
   <div class="body-content">
-    <form method="post" class="form-x" action="doAdduser.jsp">  
+    <form method="post" class="form-x" action="../userservlet">
       <div class="form-group">
         <div class="label">
           <label>用户名：</label>
@@ -51,6 +51,7 @@
         <div class="label">
           <label></label>
         </div>
+        <input name="operate" value="adduser" hidden>
         <div class="field">
           <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
         </div>

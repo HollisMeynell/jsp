@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
+<%String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/admin/";%>
+    <base href="<%=basePath%>">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -24,7 +27,7 @@
   
   <h2><span class="icon-pencil-square-o"></span>用户管理</h2>
   <ul>
-    <li><a href="list.html" target="right"><span class="icon-caret-right"></span>用户管理</a></li>
+    <li><a href="userlist.jsp" target="right"><span class="icon-caret-right"></span>用户管理</a></li>
     <li><a href="adduser.jsp" target="right"><span class="icon-caret-right"></span>添加用户</a></li>
     <li><a href="add.html" target="right"><span class="icon-caret-right"></span>修改密码</a></li>
   </ul>  
@@ -60,7 +63,7 @@ $(function(){
 <ul class="bread">
   <li><a href="{:U('Index/info')}" target="right" class="icon-home"> 首页</a></li>
   <li><a href="##" id="a_leader_txt">网站信息</a></li>
-  <li><b>当前语言：</b><span style="color:red;">中文</php></span>
+  <li><b>当前语言：</b><span style="color:red;">中文</span>
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;切换语言：<a href="##">中文</a> &nbsp;&nbsp;<a href="##">英文</a> </li>
 </ul>
 <div class="admin">

@@ -27,7 +27,7 @@
 		session.setMaxInactiveInterval(60*5);
 		session.setAttribute("username",username);
 		%>
-		<jsp:forward page="index.jsp"/>
+		<jsp:forward page="../admin/index.jsp"/>
 	<%
 		}else{
 	%>
