@@ -10,10 +10,7 @@ public class usertest {
     public static void main(String[] args) {
         try {
             UserDao c = DaoFactory.getUserDao();
-            c.adduser(new User("aasdad","6456464"));
-            System.out.println(c.login("aasdad","6456464"));
-            System.out.println(c.delUser(c.getId("aasdad")));
-            System.out.println(c.login("aasdad","6456464"));
+            System.out.println(c.login("admin","123456"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

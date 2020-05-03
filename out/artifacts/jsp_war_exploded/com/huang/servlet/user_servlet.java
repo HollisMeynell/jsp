@@ -123,6 +123,8 @@ public class user_servlet extends HttpServlet {
                 out.write("成功删除");
             else
                 out.write("删除失败");
+        }else if("cc".equals(operate)){
+            out.write("cnmd");
         }else {
             out.print("请求异常");
         }
