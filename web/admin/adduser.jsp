@@ -15,15 +15,36 @@
     <script src="js/jquery.js"></script>
     <script src="js/pintuer.js"></script>
     <script>
+        var f = false;
         function chick() {
             var pd = $("input[name='password']").val();
             var rpd = $("input[name='repassword']").val();
-            if (pd == rpd) {
-                return true;
+            var name = $("input[name='username']").val().trim();
+            if(name == ''){
+                alert("name不可为空");
+                return false;
+            }else if (pd == rpd) {
+                return puth(name);
             } else alert("两次密码不一致,请重新输入");
             $("input[name='password']").val('');
             $("input[name='repassword']").val('');
             return false;
+        }
+        function puth(name) {
+
+            $.ajax({
+                type : 'post',
+                url: '../userservlet?operate=isuser&name='+name,
+                success:function (data) {
+                    if (data == "true"){
+                        f = true;
+                    }else {
+                        f = false;
+                        alert("用户名重复")
+                    }
+                }
+            });
+            return f;
         }
     </script>
 </head>

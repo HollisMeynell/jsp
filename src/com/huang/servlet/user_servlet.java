@@ -61,8 +61,9 @@ public class user_servlet extends HttpServlet {
             UserDao userDao = DaoFactory.getUserDao();
             User user = new User(username, password);
             try {
-                if (userDao.getId(username) == 0) flag = userDao.adduser(user);
-                else out.print("用户名重复<br>");
+//                if (userDao.getId(username) == 0)
+                    flag = userDao.adduser(user);
+//                else out.print("用户名重复\n");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -71,7 +72,20 @@ public class user_servlet extends HttpServlet {
             } else {
                 out.print("添加失败");
             }
-
+        }else if("isuser".equals(operate)){
+            String name = request.getParameter("name");
+            UserDao dao = DaoFactory.getUserDao();
+            int id = 0;
+            try {
+                id = dao.getId(name);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            if(id == 0){
+                out.write("true");
+            }else{
+                out.write("false");
+            }
         } else if ("setuser".equals(operate)) {
             String username = request.getParameter("username");
             String password = request.getParameter("password");

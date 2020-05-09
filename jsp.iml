@@ -30,7 +30,7 @@
         <jarDirectory url="file://$MODULE_DIR$/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" exported="" scope="PROVIDED" name="Tomcat " level="application_server_libraries" />
-    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
