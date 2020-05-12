@@ -26,6 +26,8 @@ public class user_servlet extends HttpServlet {
         String operate = "";
         operate = request.getParameter("operate");
         PrintWriter out = response.getWriter();
+        ArrayList<User> users = null;
+        String thisname = "";
 
         if ("login".equals(operate)) {
             String username = request.getParameter("username");
@@ -87,43 +89,63 @@ public class user_servlet extends HttpServlet {
                 out.write("false");
             }
         } else if ("setuser".equals(operate)) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            String username = request.getParameter("name");
+            String yuanpwd = request.getParameter("ypwd");
+            String password = request.getParameter("pwd");
             int id = Integer.valueOf(request.getParameter("id"));
             User user = new User(id, username, password);
             boolean flag = false;
             UserDao dao = DaoFactory.getUserDao();
             try {
-                flag = dao.setuser(user);
+                flag = dao.setuser(user, yuanpwd);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             if (flag) {
                 out.print("修改成功");
             } else {
-                out.print("修改失败");
+                out.print("修改失败,请检查原密码是否正确");
             }
         } else if ("queryall".equals(operate)) {
             String name = request.getParameter("name");
-            ArrayList<User> users = null;
-            try {
-                users = DaoFactory.getUserDao().findUser(name);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            int page = Integer.valueOf(request.getParameter("page"))-1;
+            int size;
+            if (request.getParameter("size") != null){
+                size = Integer.valueOf(request.getParameter("size"));
+            }else {
+                size = 5;
+            }
+            if(users == null || !thisname.equals(name)){
+                try {
+                    users = DaoFactory.getUserDao().findUser(name);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                thisname = name;
             }
             if (users != null) {
                 StringBuilder date = new StringBuilder("{\"user\":{");
-                int i = 1;
-                for (User u : users) {
-                    if (i != 1) {
+//                int i = 1;
+//                for (User u : users) {
+//                    if (i != 1) {
+//                        date.append(',');
+//                    }
+//                    date.append("\"" + (i++) + "\":{");
+//                    date.append("\"id\":" + u.getId());
+//                    date.append(",\"name\":\"" + u.getName() + '"');
+//                    date.append("}");
+//                }
+
+                for (int i = 0;i+page*size < users.size() && i < size;i++){
+                    if(i != 0){
                         date.append(',');
                     }
-                    date.append("\"" + (i++) + "\":{");
-                    date.append("\"id\":" + u.getId());
-                    date.append(",\"name\":\"" + u.getName() + '"');
+                    date.append("\"" + (i) + "\":{");
+                    date.append("\"id\":" + users.get(i+page*size).getId());
+                    date.append(",\"name\":\"" + users.get(i+page*size).getName() + '"');
                     date.append("}");
                 }
-                date.append("}}");
+                date.append("},\"page\":\""+(int)Math.ceil((double)users.size()/size*1.0)+"\",\"this\":\""+(page+1)+"\"}");
                 out.write(new String(date));
             }
         } else if ("deleuser".equals(operate)) {

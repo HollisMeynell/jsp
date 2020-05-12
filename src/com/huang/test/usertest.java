@@ -5,14 +5,14 @@ import com.huang.entity.User;
 import com.huang.factory.DaoFactory;
 
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class usertest {
     public static void main(String[] args) {
-        try {
-            UserDao c = DaoFactory.getUserDao();
-            System.out.println(c.login("admin","123456"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        Scanner sc = new Scanner(System.in);
+        int a = sc.nextInt();
+        int b = sc.nextInt();
+        int d = (int)Math.ceil((double) a/b);
+        System.out.println(d);
     }
 }

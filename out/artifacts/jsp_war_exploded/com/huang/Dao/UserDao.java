@@ -12,5 +12,5 @@ public interface UserDao {
     ArrayList<User> findUser(String name) throws SQLException;
     boolean delUser(int id) throws SQLException;
     int getId(String naem) throws SQLException;
-    boolean setuser(User user) throws SQLException;
+    boolean setuser(User user, String pwd) throws SQLException;
 }

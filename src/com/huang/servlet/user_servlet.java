@@ -26,6 +26,8 @@ public class user_servlet extends HttpServlet {
         String operate = "";
         operate = request.getParameter("operate");
         PrintWriter out = response.getWriter();
+        ArrayList<User> users = null;
+        String thisname = "";
 
         if ("login".equals(operate)) {
             String username = request.getParameter("username");
@@ -106,25 +108,44 @@ public class user_servlet extends HttpServlet {
             }
         } else if ("queryall".equals(operate)) {
             String name = request.getParameter("name");
-            ArrayList<User> users = null;
-            try {
-                users = DaoFactory.getUserDao().findUser(name);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            int page = Integer.valueOf(request.getParameter("page"))-1;
+            int size;
+            if (request.getParameter("size") != null){
+                size = Integer.valueOf(request.getParameter("size"));
+            }else {
+                size = 5;
+            }
+            if(users == null || !thisname.equals(name)){
+                try {
+                    users = DaoFactory.getUserDao().findUser(name);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                thisname = name;
             }
             if (users != null) {
                 StringBuilder date = new StringBuilder("{\"user\":{");
-                int i = 1;
-                for (User u : users) {
-                    if (i != 1) {
+//                int i = 1;
+//                for (User u : users) {
+//                    if (i != 1) {
+//                        date.append(',');
+//                    }
+//                    date.append("\"" + (i++) + "\":{");
+//                    date.append("\"id\":" + u.getId());
+//                    date.append(",\"name\":\"" + u.getName() + '"');
+//                    date.append("}");
+//                }
+
+                for (int i = 0;i+page*size < users.size() && i < size;i++){
+                    if(i != 0){
                         date.append(',');
                     }
-                    date.append("\"" + (i++) + "\":{");
-                    date.append("\"id\":" + u.getId());
-                    date.append(",\"name\":\"" + u.getName() + '"');
+                    date.append("\"" + (i) + "\":{");
+                    date.append("\"id\":" + users.get(i+page*size).getId());
+                    date.append(",\"name\":\"" + users.get(i+page*size).getName() + '"');
                     date.append("}");
                 }
-                date.append("}}");
+                date.append("},\"page\":\""+(int)Math.ceil((double)users.size()/size*1.0)+"\",\"this\":\""+(page+1)+"\"}");
                 out.write(new String(date));
             }
         } else if ("deleuser".equals(operate)) {

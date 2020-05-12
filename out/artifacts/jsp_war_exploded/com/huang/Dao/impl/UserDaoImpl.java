@@ -45,6 +45,7 @@ public class UserDaoImpl implements UserDao {
         String sql = "select * from admin_info where name like ?";
         PreparedStatement prep = SQL.getInstance().getConn().prepareStatement(sql);
         prep.setString(1, "%" + name + "%");
+        users.clear();
         ResultSet rs = prep.executeQuery();
         while (rs.next()) {
             this.users.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3)));
@@ -78,9 +79,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public boolean setuser(User user) throws SQLException {
-        String sql = "update admin_info set name=?,pwd=? where id=?";
+    public boolean setuser(User user, String pwd) throws SQLException {
+        String sql = "select pwd from admin_info where id=?";
         PreparedStatement prep = SQL.getInstance().getConn().prepareStatement(sql);
+        prep.setInt(1,user.getId());
+        ResultSet rs = prep.executeQuery();
+        if(rs.next()){
+            if(!rs.getString(1).equals(pwd)){
+                rs.close();
+                prep.close();
+                return false;
+            }else {
+                rs.close();
+                prep.close();
+            }
+        }
+        String sql1 = "update admin_info set name=?,pwd=? where id=?";
+        prep = SQL.getInstance().getConn().prepareStatement(sql1);
         prep.setString(1, user.getName());
         prep.setString(2, user.getPasswd());
         prep.setInt(3, user.getId());

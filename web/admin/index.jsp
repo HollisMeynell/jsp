@@ -34,7 +34,7 @@
   <ul>
     <li><a href="userlist.jsp" target="right"><span class="icon-caret-right"></span>用户管理</a></li>
     <li><a href="adduser.jsp" target="right"><span class="icon-caret-right"></span>添加用户</a></li>
-    <li><a href="add.html" target="right"><span class="icon-caret-right"></span>修改密码</a></li>
+    <li><a href="setpwd.jsp" target="right"><span class="icon-caret-right"></span>修改密码</a></li>
   </ul>  
    <h2><span class="icon-pencil-square-o"></span>商品管理</h2>
   <ul>

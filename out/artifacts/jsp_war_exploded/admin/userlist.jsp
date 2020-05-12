@@ -24,7 +24,7 @@
                 <li>
                     <input type="text" placeholder="请输入用户名" name="keywords" class="input"
                            style="width:250px; line-height:17px;display:inline-block"/>
-                    <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()"> 搜索</a>
+                    <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch(1)"> 搜索</a>
                 </li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
             </tr>
             <tr id="voend">
                 <td colspan="8">
-                    <div class="pagelist"><a href="">上一页</a> <span class="current">1</span><a href="">下一页</a><a href="">尾页</a>
+                    <div class="pagelist"><a onclick="befo()">上一页</a><a id="next" onclick="next()">下一页</a><a onclick="end()">尾页</a>
                     </div>
                 </td>
             </tr>
@@ -46,12 +46,16 @@
 </form>
 <script type="text/javascript">
     //搜索
-    function changesearch() {
+    function changesearch(page) {
         $('.usernode').remove();
         $.ajax({
             type: 'post',
-            url: '../userservlet?operate=queryall&name=' + $("input[name=\'keywords\']").val(),
-            dateType: 'json',
+            url: '../userservlet',
+            data:{
+                'operate':'queryall',
+                'name':$("input[name=\'keywords\']").val(),
+                'page':page
+            },
             success: function (data) {
                 data = JSON.parse(data);
                 var ed = $('#voend');
@@ -63,14 +67,41 @@
                         '<td><div class="button-group"> <a class="button border-main" href="setuser.jsp?name=' + data.user[i].name + '&id=' + data.user[i].id + '"><span class="icon-edit"></span> 修改</a> <a class="button border-red" href="javascript:void(0)" onclick="return del(' + data.user[i].id + ')"><span class="icon-trash-o"></span> 删除</a> </div></td>' +
                         '</tr>';
                     ed.before(dom);
+
                 }
+                $(".pagelist span").remove()
+                var dom = "";
+                for (var i = 1;i <= parseInt(data.page);i++){
+                    if(i == parseInt(data.this)){
+                        dom = dom+'<span class="current">'+i+'</span>'
+                    }else{
+                        dom = dom+'<span>'+i+'</span>'
+                    }
+                }
+                $('#next').before(dom)
             },
             error: function () {
                 alert("error");
             }
         })
     }
-
+    function befo() {
+        var p = $(".current").text();
+        if(p > 1){
+            changesearch(parseInt(p)-1);
+        }
+    }
+    function next() {
+        var p = $(".current").text();
+        var n = $(".pagelist span").length;
+        if(p < n){
+            changesearch(parseInt(p)+1);
+        }
+    }
+    function end() {
+        var n = $(".pagelist span").length;
+        changesearch(n);
+    }
     //单个删除
     function del(id) {
         if (confirm("您确定要删除吗?")) {
