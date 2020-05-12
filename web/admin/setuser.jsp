@@ -21,7 +21,22 @@
             var pd = $("input[name='password']").val();
             var rpd = $("input[name='repassword']").val();
             if(pd == rpd){
-                return true;
+                $.ajax({
+                    type:'post',
+                    url: '../userservlet',
+                    data:{
+                        'operate':'setuser',
+                        'name':$("input[name='username']").val(),
+                        'ypwd':$("input[name='yuanpassword']").val(),
+                        'pwd':$("input[name='password']").val(),
+                        'id':'<%=id%>'
+                    },
+                    success:function (data) {
+                        $("input").val('');
+                        alert(data);
+                    }
+                })
+                return false;
             }else alert("两次密码不一致,请重新输入");
             $("input[name='password']").val('');
             $("input[name='repassword']").val('');
@@ -46,7 +61,17 @@
 
             <div class="form-group">
                 <div class="label">
-                    <label>密码：</label>
+                    <label>原密码：</label>
+                </div>
+                <div class="field">
+                    <input type="password" class="input w50" name="yuanpassword" value="" data-validate="member:密码只能为数字"  />
+                    <div class="tips"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="label">
+                    <label>新密码：</label>
                 </div>
                 <div class="field">
                     <input type="password" class="input w50" name="password" value="" data-validate="member:密码只能为数字"  />
@@ -68,7 +93,7 @@
                     <label></label>
                 </div>
                 <input name="operate" value="setuser" hidden>
-                <input name="id" value="<%=id%>" hidden>
+<%--                <input name="id" value="<%=id%>" hidden>--%>
                 <div class="field">
                     <button class="button bg-main icon-check-square-o" type="submit"> 提交</button>
                 </div>

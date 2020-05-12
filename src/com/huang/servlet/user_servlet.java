@@ -87,21 +87,22 @@ public class user_servlet extends HttpServlet {
                 out.write("false");
             }
         } else if ("setuser".equals(operate)) {
-            String username = request.getParameter("username");
-            String password = request.getParameter("password");
+            String username = request.getParameter("name");
+            String yuanpwd = request.getParameter("ypwd");
+            String password = request.getParameter("pwd");
             int id = Integer.valueOf(request.getParameter("id"));
             User user = new User(id, username, password);
             boolean flag = false;
             UserDao dao = DaoFactory.getUserDao();
             try {
-                flag = dao.setuser(user);
+                flag = dao.setuser(user, yuanpwd);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             if (flag) {
                 out.print("修改成功");
             } else {
-                out.print("修改失败");
+                out.print("修改失败,请检查原密码是否正确");
             }
         } else if ("queryall".equals(operate)) {
             String name = request.getParameter("name");
